@@ -1,0 +1,19 @@
+{
+  "name": "最后防线 · 尸潮战役",
+  "short_name": "最后防线",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#142b30",
+  "background_color": "#102332",
+  "icons": [
+    {
+      "src": "./public/assets/units/rifleman.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

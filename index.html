@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#142b30"><title>最后防线 · 尸潮战役</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='9' fill='%23142b30'/%3E%3Cpath d='M11 10h18v15l-9 8-9-8z' fill='%23e1b36b'/%3E%3Cpath d='M20 14v12m-6-6h12' stroke='%23142b30' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./assets/style-5080a0ba4e05.css">
+<meta name="application-version" content="c3d3ca454c76">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./public/assets/units/rifleman.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#map" id="brand" aria-label="最后防线，返回战役地图"><img src="./public/assets/units/rifleman.png" alt=""><span>最后防线<small>尸潮战役 · LAST LINE</small></span></a>
+    <div class="top-actions"><span class="progress-badge" id="header-progress">战役 0 / 12</span><div class="wallet" aria-label="金币余额"><span>金币</span><strong id="gold">180</strong></div><button id="sound" class="icon-button" aria-pressed="true">音效 开</button></div>
+  </header>
+  <main id="app">
+    <section id="map-screen" class="screen map-screen" aria-label="战役地图">
+      <div class="map-heading"><div><span class="eyebrow">CAMPAIGN</span><h1>战役地图</h1></div><p>肃清尸潮，向失落城区推进</p><span id="campaign-total"></span></div>
+      <div id="chapter-tabs" class="chapter-tabs" aria-label="战役章节"></div>
+      <div class="campaign-actions"><div><strong>开启新一轮战役</strong><span>可保留旧档，随时切回</span></div><button id="campaign-manage" class="primary">重新开始战役</button></div>
+      <div class="campaign-layout">
+        <div class="world-map" id="world-map"><div class="map-atmosphere"><span id="chapter-kicker"></span><strong id="chapter-title"></strong></div><div class="map-scene" id="map-scene"><img id="chapter-map-art" class="campaign-art" src="./campaign-game/assets/ui/chapters/outskirts.webp" alt="林地、农舍与溪流桥梁之间的外围公路"><div id="level-list" class="mission-nodes"></div></div><div class="map-legend" aria-label="关卡状态图例"><span>图例</span><span><i class="legend-dot completed"></i>已通关</span><span><i class="legend-dot current"></i>可挑战</span><span><i class="legend-dot locked"></i>未解锁</span></div></div>
+        <aside id="mission-detail" class="mission-panel" aria-live="polite"></aside>
+      </div>
+    </section>
+    <section id="prep-screen" class="screen prep-screen" hidden aria-labelledby="prep-title">
+      <div class="prep-heading"><button class="back-button" data-action="map">返回地图</button><div><span id="prep-level-label" class="eyebrow"></span><h1 id="prep-title">战前整备</h1></div><span class="army-size" id="army-size"></span></div>
+      <div class="prep-tabs" role="tablist" aria-label="整备面板"><button role="tab" id="deploy-tab" data-prep-tab="deploy" aria-controls="deploy-panel" aria-selected="true">自由部署</button><button role="tab" id="recruit-tab" data-prep-tab="recruit" aria-controls="recruit-panel" aria-selected="false">招募部队 <span>7</span></button></div>
+      <div class="prep-layout">
+        <section id="deploy-panel" class="deployment-panel"><div class="panel-title"><h2>部署阵容</h2><span>正面来敌 ↑</span></div><div class="deployment-toolbar"><p class="helper" id="deployment-help">拖动自由摆放，或选中单位后点地面。</p><button class="deploy-expand" data-action="expand-deploy" aria-expanded="false">放大部署</button></div><div class="deployment-map"><canvas id="deployment" width="740" height="840" tabindex="0" role="img" aria-label="自由部署战场，选兵种后每点地面放置一个；可拖动场上单位。键盘方向键调整，回车部署" aria-describedby="deployment-help"></canvas></div><div id="deployment-summary" class="deployment-summary"></div><div id="deployment-roster" class="deployment-roster" aria-label="按兵种查看总数、场上与待部署数量"></div><div class="selected-unit" id="selected-unit"></div></section>
+        <section id="recruit-panel" class="recruit-panel"><div class="panel-title"><h2>招募部队</h2><span>招募不限量 · 战前购买</span></div><div class="unit-filters" aria-label="兵种分类"><button data-filter="all" aria-pressed="true">全部</button><button data-filter="infantry" aria-pressed="false">步兵</button><button data-filter="armor" aria-pressed="false">装甲</button><button data-filter="support" aria-pressed="false">支援</button></div><div id="shop" class="unit-grid"></div><p class="supply-note">招募不限量，金币足够即可购买。先选兵种，再逐个部署，场上单位不能重叠。</p></section>
+      </div>
+      <div class="launch-panel"><div><strong id="launch-mission"></strong><div id="prep-reward"></div></div><button class="primary launch" id="start" disabled>正在载入战场…</button></div>
+    </section>
+    <section id="battle-screen" class="battle-screen" hidden aria-label="自动战斗">
+      <div class="battle-top"><div><span id="battle-level"></span><b id="wave">第 1 / 2 波</b></div><div class="battle-totals"><span>击杀 <b id="kills">0</b></span><span class="gold-text">待结算 +<b id="bounty">0</b></span><time id="time">00:00</time></div></div>
+      <div id="wave-track" class="wave-track" aria-hidden="true"></div><div id="roster-counts" class="roster-counts" aria-label="剩余兵力"></div>
+      <div class="arena-wrap"><canvas id="battlefield" width="1080" height="1400" aria-label="守军自动迎击丧尸的实时战场"></canvas><div class="pause-shade" id="pause-shade" hidden><span class="pause-symbol">Ⅱ</span><h2>战斗已暂停</h2><p id="pause-reason">准备好后继续作战</p><button class="primary" data-action="pause">继续战斗</button></div></div>
+      <div class="battle-controls"><button id="retreat" class="text-button">撤回整备</button><span id="enemies-left"></span><div><button id="speed" class="secondary">1× 速度</button><button id="pause" class="secondary">Ⅱ 暂停</button></div></div>
+    </section>
+  </main>
+  <nav id="footer" class="bottom-nav" aria-label="游戏导航"><button data-action="map" data-nav="map" aria-current="page"><span>战役地图</span><small>CAMPAIGN</small></button><button data-action="prepare" data-nav="prep"><span>部队整备</span><small>SQUAD</small></button><button id="help"><span>作战手册</span><small>FIELD MANUAL</small></button><span id="save-status" class="save-indicator">进度已保存</span></nav>
+  <div class="toast" id="notice" role="status" aria-live="polite" hidden></div>
+  <dialog id="result-dialog" class="result-dialog" aria-labelledby="result-title"><div id="result-content"></div></dialog>
+  <dialog id="campaign-dialog" class="small-dialog" aria-labelledby="campaign-title">
+    <p class="eyebrow">NEW CAMPAIGN</p><h2 id="campaign-title">重新开始战役</h2><p id="campaign-current"></p>
+    <fieldset class="campaign-options"><legend>选择新战役的开局</legend>
+      <label><input type="radio" name="campaign-start" value="fresh" checked><span><b>全新开局 · 推荐</b><small>180 金币、2 名步枪兵，从第 1 关体验新难度。</small></span></label>
+      <label><input type="radio" name="campaign-start" value="keep"><span><b>保留金币和部队</b><small>只重置关卡与战役统计，用现有阵容重新挑战。</small></span></label>
+    </fieldset>
+    <p class="campaign-save-note">当前战役会保存为“上一次战役”，可随时切回。仅保留一份上次战役，再次重开会更新它。</p>
+    <button id="campaign-restore" class="secondary" hidden>切回上一次战役</button>
+    <div class="dialog-actions"><button class="secondary" data-close="campaign-dialog">继续当前战役</button><button class="primary" id="campaign-restart">保存旧档并开始</button></div>
+  </dialog>
+  <dialog id="confirm-dialog" class="small-dialog" aria-labelledby="confirm-title"><p class="eyebrow">TACTICAL WITHDRAWAL</p><h2 id="confirm-title">放弃本局并返回整备？</h2><p>返回整备会取消本局全部待结算金币。战前已有金币和部队保留，所有单位恢复。</p><p id="retreat-bounty" class="gold-text"></p><div class="dialog-actions"><button class="secondary" id="cancel-retreat">留在战场</button><button class="primary" id="confirm-retreat">放弃收益，返回整备</button></div></dialog>
+  <dialog id="help-dialog" class="small-dialog" aria-labelledby="help-title"><p class="eyebrow">FIELD MANUAL</p><h2 id="help-title">指挥官手册</h2><ol><li>选关后招募步兵和战车，新单位进入待部署名单。</li><li>部署页按兵种显示总数、场上和待部署数量。选中兵种后，每点一次地面放置一个；点场上单位可拖动或收回。没有固定格子。收回不退款，遣散返还全价。</li><li>只有已部署单位出战，至少需部署一名攻击单位；待部署单位留在名单。战斗可暂停或切换 2× 速度。</li><li>普通 / 疾行 / 腐蚀 / 冲撞 / 尸王击杀分别获得 3 / 4 / 12 / 22 / 90 金币。</li><li>清空全部波次获胜，解锁下一关；失败可补给或重玩旧关。</li></ol><p>阵容永久保留，每局恢复满血。正常胜负结算后金币才到账；主动撤退或刷新中断会取消本局全部待结算金币。存档只保存在当前浏览器与地址中。</p><form method="dialog"><button class="primary">明白，准备出发</button></form></dialog>
+  <dialog id="unit-dialog" class="unit-dialog" aria-labelledby="unit-detail-title"><button class="dialog-close" data-close="unit-dialog" aria-label="关闭兵种详情">关闭</button><div id="unit-detail"></div></dialog>
+  <dialog id="intel-dialog" class="small-dialog" aria-labelledby="intel-title"><button class="dialog-close" data-close="intel-dialog" aria-label="关闭作战情报">关闭</button><div id="intel-content"></div></dialog>
+  <script type="module" src="./assets/game-c3d3ca454c76.js"></script>
+</body>
+</html>
