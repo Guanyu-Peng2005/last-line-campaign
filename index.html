@@ -4,8 +4,8 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#142b30"><title>最后防线 · 尸潮战役</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='9' fill='%23142b30'/%3E%3Cpath d='M11 10h18v15l-9 8-9-8z' fill='%23e1b36b'/%3E%3Cpath d='M20 14v12m-6-6h12' stroke='%23142b30' stroke-width='3'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="./assets/style-e234e8d0f2d5.css">
-<meta name="application-version" content="b9a763bd14e8">
+  <link rel="stylesheet" href="./assets/style-da3f43a9e7ee.css">
+<meta name="application-version" content="bb90b7594aee">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="apple-touch-icon" href="./public/assets/units/rifleman.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -25,13 +25,17 @@
         <aside id="mission-detail" class="mission-panel" aria-live="polite"></aside>
       </div>
     </section>
-    <section id="prep-screen" class="screen prep-screen" hidden aria-labelledby="prep-title">
-      <div class="prep-heading"><button class="back-button" data-action="map">返回地图</button><div><span id="prep-level-label" class="eyebrow"></span><h1 id="prep-title">战前整备</h1></div><span class="army-size" id="army-size"></span></div>
-      <div class="prep-tabs" role="tablist" aria-label="整备面板"><button role="tab" id="deploy-tab" data-prep-tab="deploy" aria-controls="deploy-panel" aria-selected="true">自由部署</button><button role="tab" id="recruit-tab" data-prep-tab="recruit" aria-controls="recruit-panel" aria-selected="false">招募部队 <span>7</span></button></div>
-      <div class="prep-layout">
-        <section id="deploy-panel" class="deployment-panel"><div class="panel-title"><h2>部署阵容</h2><span>正面来敌 ↑</span></div><div class="deployment-toolbar"><p class="helper" id="deployment-help">拖动自由摆放，或选中单位后点地面。</p><button class="deploy-expand" data-action="expand-deploy" aria-expanded="false">放大部署</button></div><div class="deployment-map"><canvas id="deployment" width="740" height="840" tabindex="0" role="img" aria-label="自由部署战场，选兵种后每点地面放置一个；可拖动场上单位。键盘方向键调整，回车部署" aria-describedby="deployment-help"></canvas><div id="deployment-load-status" class="asset-status deployment-load-status" role="status" aria-live="polite"><div><strong id="assets-load-title">战场正在载入</strong><p id="assets-load-message">正在下载地图和单位图片…</p></div><button id="retry-assets" class="secondary" hidden>重新加载战场</button></div></div><div id="deployment-summary" class="deployment-summary"></div><div id="deployment-roster" class="deployment-roster" aria-label="按兵种查看总数、场上与待部署数量"></div><div class="selected-unit" id="selected-unit"></div></section>
-        <section id="recruit-panel" class="recruit-panel"><div class="panel-title"><h2>招募部队</h2><span>招募不限量 · 战前购买</span></div><div class="unit-filters" aria-label="兵种分类"><button data-filter="all" aria-pressed="true">全部</button><button data-filter="infantry" aria-pressed="false">步兵</button><button data-filter="armor" aria-pressed="false">装甲</button><button data-filter="support" aria-pressed="false">支援</button></div><div id="shop" class="unit-grid"></div><p class="supply-note">招募不限量，金币足够即可购买。先选兵种，再逐个部署，场上单位不能重叠。</p></section>
-      </div>
+    <section id="prep-screen" class="screen prep-screen unified-prep" hidden aria-labelledby="prep-title">
+      <div class="prep-heading"><button class="back-button" data-action="map">返回地图</button><div><span id="prep-level-label" class="eyebrow"></span><h1 id="prep-title">招募与部署</h1></div><span class="army-size" id="army-size"></span></div>
+      <section id="deploy-panel" class="deployment-panel" aria-label="自由部署与招募">
+        <div class="deployment-toolbar"><p class="helper" id="deployment-help">下方购买兵种，选中后点地图逐个部署。</p><span class="deployment-direction">正面来敌 ↑</span></div>
+        <div class="deployment-map"><canvas id="deployment" width="740" height="840" tabindex="0" role="img" aria-label="自由部署战场，选兵种后每点地面放置一个；可拖动场上单位。键盘方向键调整，回车部署" aria-describedby="deployment-help"></canvas><div id="deployment-load-status" class="asset-status deployment-load-status" role="status" aria-live="polite"><div><strong id="assets-load-title">战场正在载入</strong><p id="assets-load-message">正在下载地图和单位图片…</p></div><button id="retry-assets" class="secondary" hidden>重新加载战场</button></div></div>
+        <div class="prep-controls" aria-label="兵种与部署操作">
+          <div class="selected-unit" id="selected-unit" aria-live="polite"></div>
+          <div id="deployment-summary" class="deployment-summary"></div>
+          <div id="deployment-roster" class="deployment-roster" aria-label="左右滑动选择和购买兵种"></div>
+        </div>
+      </section>
       <div class="launch-panel"><div><strong id="launch-mission"></strong><div id="prep-reward"></div></div><button class="primary launch" id="start" disabled>正在载入战场…</button></div>
     </section>
     <section id="battle-screen" class="battle-screen" hidden aria-label="自动战斗">
@@ -55,9 +59,9 @@
     <div class="dialog-actions"><button class="secondary" data-close="campaign-dialog">继续当前战役</button><button class="primary" id="campaign-restart">保存旧档并开始</button></div>
   </dialog>
   <dialog id="confirm-dialog" class="small-dialog" aria-labelledby="confirm-title"><p class="eyebrow">TACTICAL WITHDRAWAL</p><h2 id="confirm-title">放弃本局并返回整备？</h2><p>返回整备会取消本局全部待结算金币。战前已有金币和部队保留，所有单位恢复。</p><p id="retreat-bounty" class="gold-text"></p><div class="dialog-actions"><button class="secondary" id="cancel-retreat">留在战场</button><button class="primary" id="confirm-retreat">放弃收益，返回整备</button></div></dialog>
-  <dialog id="help-dialog" class="small-dialog" aria-labelledby="help-title"><p class="eyebrow">FIELD MANUAL</p><h2 id="help-title">指挥官手册</h2><ol><li>选关后招募步兵和战车，新单位进入待部署名单。</li><li>部署页按兵种显示总数、场上和待部署数量。选中兵种后，每点一次地面放置一个；点场上单位可拖动或收回。没有固定格子。收回不退款，遣散返还全价。</li><li>只有已部署单位出战，至少需部署一名攻击单位；待部署单位留在名单。战斗可暂停或切换 2× 速度。</li><li>普通 / 疾行 / 腐蚀 / 冲撞 / 尸王击杀分别获得 3 / 4 / 12 / 22 / 90 金币。</li><li>清空全部波次获胜，解锁下一关；失败可补给或重玩旧关。</li></ol><p>阵容永久保留，每局恢复满血。正常胜负结算后金币才到账；主动撤退或刷新中断会取消本局全部待结算金币。存档只保存在当前浏览器与地址中。</p><form method="dialog"><button class="primary">明白，准备出发</button></form></dialog>
+  <dialog id="help-dialog" class="small-dialog" aria-labelledby="help-title"><p class="eyebrow">FIELD MANUAL</p><h2 id="help-title">指挥官手册</h2><ol><li>整备页下方左右滑动选择兵种，点击购买按钮招募。新单位进入待部署名单，购买后自动选中，点上方地图逐个放置。</li><li>部署页按兵种显示总数、场上和待部署数量。选中兵种后，每点一次地面放置一个；点场上单位可拖动或收回。没有固定格子。收回不退款，遣散返还全价。</li><li>只有已部署单位出战，至少需部署一名攻击单位；待部署单位留在名单。战斗可暂停或切换 2× 速度。</li><li>普通 / 疾行 / 腐蚀 / 冲撞 / 尸王击杀分别获得 3 / 4 / 12 / 22 / 90 金币。</li><li>清空全部波次获胜，解锁下一关；失败可补给或重玩旧关。</li></ol><p>阵容永久保留，每局恢复满血。正常胜负结算后金币才到账；主动撤退或刷新中断会取消本局全部待结算金币。存档只保存在当前浏览器与地址中。</p><form method="dialog"><button class="primary">明白，准备出发</button></form></dialog>
   <dialog id="unit-dialog" class="unit-dialog" aria-labelledby="unit-detail-title"><button class="dialog-close" data-close="unit-dialog" aria-label="关闭兵种详情">关闭</button><div id="unit-detail"></div></dialog>
   <dialog id="intel-dialog" class="small-dialog" aria-labelledby="intel-title"><button class="dialog-close" data-close="intel-dialog" aria-label="关闭作战情报">关闭</button><div id="intel-content"></div></dialog>
-  <script type="module" src="./assets/game-b9a763bd14e8.js"></script>
+  <script type="module" src="./assets/game-bb90b7594aee.js"></script>
 </body>
 </html>
